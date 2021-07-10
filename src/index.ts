@@ -35,7 +35,7 @@ app.get("/search", async (req: any, res: any) => {
     .then((data: any) => {
       console.log(data);
       return data.data;
-    }).catch(e=>console.log(e));
+    }).catch((e:any) =>console.log(e));
   console.log(response);
   res.json(response);
 });
