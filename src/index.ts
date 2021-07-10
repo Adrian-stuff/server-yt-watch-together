@@ -10,12 +10,12 @@ const app = express();
 const httpServer = createServer(app);
 const io = new Server(httpServer, {
   cors: {
-    origin: process.env.ORIGIN,
+    origin: "https://doge-watch.web.app",
     methods: ["GET", "POST"],
   },
 });
 
-app.use(cors({ origin: process.env.ORIGIN }));
+app.use(cors({ origin: "https://doge-watch.web.app" }));
 
 const PORT = process.env.PORT || 8000;
 enum PlaybackStatus {
