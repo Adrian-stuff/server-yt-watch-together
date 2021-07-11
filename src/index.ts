@@ -10,12 +10,14 @@ const app = express();
 const httpServer = createServer(app);
 const io = new Server(httpServer, {
   cors: {
-    origin: "*",
+    origin: "https://dogewatch.herokuapp.com",
+    // origin: "*",
     methods: ["GET", "POST"],
   },
 });
 
-app.use(cors({ origin: process.env.ORIGIN }));
+app.use(cors({ origin: "https://dogewatch.herokuapp.com" }));
+// app.use(cors());
 
 const PORT = process.env.PORT || 8000;
 enum PlaybackStatus {
@@ -30,11 +32,14 @@ enum PlaybackStatus {
 app.get("/search", async (req: any, res: any) => {
   const response = await axios
     .get(
-      `https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=10&q=${req.query.q}&key=${process.env.API_KEY}`
+      `https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=15&q=${req.query.q}&key=${process.env.API_KEY}`
     )
     .then((data: any) => {
       console.log(data);
       return data.data;
+    })
+    .catch((e: any) => {
+      console.log(e);
     });
   console.log(response);
   res.json(response);
@@ -155,6 +160,14 @@ io.on("connection", (socket: Socket) => {
     } catch (e) {}
   });
 
+  socket.on("getAllRooms", () => {
+    Object.keys(connectedUsers).forEach((e) => {
+      rooms.set(e, connectedUsers[e].room);
+    });
+    // console.log([...new Set(rooms.values())]);
+    socket.emit("getAllRooms", [...new Set(rooms.values())]);
+  });
+
   socket.on("leaveRoom", () => {
     try {
       console.log("user-leaves room:", connectedUsers[socket.id]);
@@ -171,7 +184,7 @@ io.on("connection", (socket: Socket) => {
             )
           );
         socket.leave(connectedUsers[socket.id]);
-        // io.emit("get-all-rooms", rooms);
+        io.emit("getAllRooms", rooms);
         rooms.delete(socket.id);
         delete connectedUsers[socket.id];
       }
@@ -194,7 +207,7 @@ io.on("connection", (socket: Socket) => {
             )
           );
         socket.leave(connectedUsers[socket.id]);
-        // io.emit("get-all-rooms", rooms);
+        io.emit("getAllRooms", rooms);
         rooms.delete(socket.id);
         delete connectedUsers[socket.id];
       }
