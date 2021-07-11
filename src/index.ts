@@ -10,14 +10,12 @@ const app = express();
 const httpServer = createServer(app);
 const io = new Server(httpServer, {
   cors: {
-    origin: "https://dogewatch.herokuapp.com",
-    // origin: "*",
+    origin: "https://doge-watch.web.app",
     methods: ["GET", "POST"],
   },
 });
 
-app.use(cors({ origin: "https://dogewatch.herokuapp.com" }));
-// app.use(cors());
+app.use(cors({ origin: "https://doge-watch.web.app" }));
 
 const PORT = process.env.PORT || 8000;
 enum PlaybackStatus {
@@ -38,9 +36,7 @@ app.get("/search", async (req: any, res: any) => {
       console.log(data);
       return data.data;
     })
-    .catch((e: any) => {
-      console.log(e);
-    });
+    .catch((e: any) => console.log(e));
   console.log(response);
   res.json(response);
 });
