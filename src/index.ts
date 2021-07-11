@@ -30,7 +30,7 @@ enum PlaybackStatus {
 app.get("/search", async (req: any, res: any) => {
   const response = await axios
     .get(
-      `https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=10&q=${req.query.q}&key=${process.env.API_KEY}`
+      `https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=15&q=${req.query.q}&key=${process.env.API_KEY}`
     )
     .then((data: any) => {
       console.log(data);
