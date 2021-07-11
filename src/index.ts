@@ -11,12 +11,13 @@ const httpServer = createServer(app);
 const io = new Server(httpServer, {
   cors: {
     origin: "https://doge-watch.web.app",
+    // origin: "*",
     methods: ["GET", "POST"],
   },
 });
 
 app.use(cors({ origin: "https://doge-watch.web.app" }));
-
+// app.use(cors());
 const PORT = process.env.PORT || 8000;
 enum PlaybackStatus {
   unstarted = -1,
@@ -110,13 +111,13 @@ io.on("connection", (socket: Socket) => {
           setVideoData("XA2YEHn-A8Q", data.room);
           console.log("no videoid video id set.");
         }
-        const videoData = getVideoData(data.room);
+        const videoData: Map<any, any> = getVideoData(data.room);
 
         let sendData = {
-          videoID: videoData.videoID,
+          videoID: videoData.get("videoID"),
           isAdmin: checkIfIsAdmin(data.room, data.username),
         };
-        io.to(connectedUsers[socket.id].room).emit("userJoined", {
+        socket.broadcast.to(connectedUsers[socket.id].room).emit("userJoined", {
           ...sendData,
           username: data.username,
         });
@@ -124,7 +125,7 @@ io.on("connection", (socket: Socket) => {
         socket.emit("joinRoom", sendData);
         console.log("videodata: ", videoData);
         console.log("sendData: ", sendData);
-        console.log("videoID: ", videoData.videoID);
+        console.log("videoID: ", videoData.get("videoID"));
         console.log("joinRoom:", connectedUsers);
         console.log("datajoinroom", data);
       } else {
