@@ -168,7 +168,10 @@ io.on("connection", (socket: Socket) => {
   socket.on("leaveRoom", () => {
     try {
       console.log("user-leaves room:", connectedUsers[socket.id]);
-
+      socket.to(connectedUsers[socket.id].room).emit("chatMessage", {
+        user: "System",
+        message: `${connectedUsers[socket.id].username} left the room.`,
+      });
       let userData = connectedUsers[socket.id];
       if (typeof userData !== "undefined") {
         socket
@@ -192,6 +195,7 @@ io.on("connection", (socket: Socket) => {
   socket.on("disconnect", () => {
     try {
       console.log("user disconnected");
+
       let userData = connectedUsers[socket.id];
       if (typeof userData !== "undefined") {
         socket
