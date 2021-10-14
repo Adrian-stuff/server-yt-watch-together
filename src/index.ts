@@ -106,9 +106,9 @@ io.on("connection", (socket: Socket) => {
       ) {
         connectedUsers[socket.id] = data;
         socket.join(data.room);
-        // if videodata dont have value then set vidid to alcohol free(XA2YEHn-A8Q)
+        // if videodata dont have value then set vidid to the feels(f5_wn8mexmM)
         if (!isDataHas(data.room)) {
-          setVideoData("XA2YEHn-A8Q", data.room);
+          setVideoData("f5_wn8mexmM", data.room);
           console.log("no videoid video id set.");
         }
         const videoData: Map<any, any> = getVideoData(data.room);
