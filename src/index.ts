@@ -43,6 +43,12 @@ app.get("/search", async (req: any, res: any) => {
 });
 
 const rooms = new Map();
+
+//delete this later
+rooms.set("nikki", "lmao bading si nikki");
+
+//pls
+
 let connectedUsers: any = {};
 const removeSpaces = (string: string) => {
   return string.trim().replace(/\s/g, "");
