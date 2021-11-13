@@ -43,12 +43,6 @@ app.get("/search", async (req: any, res: any) => {
 });
 
 const rooms = new Map();
-
-//delete this later
-rooms.set("nikki", "lmao bading si nikki");
-
-//pls
-
 let connectedUsers: any = {};
 const removeSpaces = (string: string) => {
   return string.trim().replace(/\s/g, "");
@@ -86,7 +80,10 @@ const setIsAdmin = (room: string, username: string) => {
 };
 io.on("connection", (socket: Socket) => {
   console.log(`user connected socket id: ${socket.id}`);
+//delete this later
+rooms.set("nikki", "lmao bading si nikki");
 
+//pls
   socket.on("setVideoData", (data) => {
     try {
       console.log("here", data);
