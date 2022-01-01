@@ -146,7 +146,10 @@ io.on("connection", (socket: Socket) => {
       socket.broadcast
         .to(connectedUsers[socket.id].room)
         .emit("playStatus", data);
-    } catch (e) {}
+    } catch (e) {
+      console.log(e);
+      
+    }
   });
 
   socket.on("chatMessage", (data) => {
@@ -154,7 +157,10 @@ io.on("connection", (socket: Socket) => {
       console.log(data);
 
       io.to(connectedUsers[socket.id].room).emit("chatMessage", data);
-    } catch (e) {}
+    } catch (e) {
+      console.log(e);
+      
+    }
   });
 
   socket.on("getAllRooms", () => {
@@ -170,23 +176,23 @@ io.on("connection", (socket: Socket) => {
       console.log("user-leaves room:", connectedUsers[socket.id]);
       let userData = connectedUsers[socket.id];
       if (typeof userData !== "undefined") {
-        socket.to(connectedUsers[socket.id].room).emit("chatMessage", {
+        socket.to(userData.room).emit("chatMessage", {
           user: "System",
-          message: `${connectedUsers[socket.id].username} left the room.`,
+          message: `${userData.username} left the room.`,
         });
         socket
-          .to(connectedUsers[socket.id].room)
+          .to(userData.room)
           .emit(
             "setNewAdmin",
             setIsAdmin(
-              connectedUsers[socket.id].room,
-              connectedUsers[socket.id].username
+              userData.room,
+              userData.username
             )
           );
-        socket.leave(connectedUsers[socket.id]);
+        socket.leave(userData);
         io.emit("getAllRooms", rooms);
         rooms.delete(socket.id);
-        delete connectedUsers[socket.id];
+        delete userData;
       }
       console.log(connectedUsers[socket.id]);
     } catch (e) {}
