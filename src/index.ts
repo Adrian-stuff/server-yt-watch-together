@@ -80,10 +80,7 @@ const setIsAdmin = (room: string, username: string) => {
 };
 io.on("connection", (socket: Socket) => {
   console.log(`user connected socket id: ${socket.id}`);
-//delete this later
-rooms.set("nikki", "lmao bading si nikki");
 
-//pls
   socket.on("setVideoData", (data) => {
     try {
       console.log("here", data);
