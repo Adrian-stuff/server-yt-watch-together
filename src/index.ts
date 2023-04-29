@@ -109,7 +109,7 @@ io.on("connection", (socket: Socket) => {
         socket.join(data.room);
         // if videodata dont have value then set vidid to talk that talk (k6jqx9kZgPM)
         if (!isDataHas(data.room)) {
-          setVideoData("k6jqx9kZgPM", data.room);
+          setVideoData("w4cTYnOPdNk", data.room);
           console.log("no videoid video id set.");
         }
         const videoData: Map<any, any> = getVideoData(data.room);
